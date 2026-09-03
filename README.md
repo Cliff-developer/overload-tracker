@@ -1,88 +1,48 @@
-# 🏋️ Overload Tracker
+# 💪 Overload Tracker
 
-A personal progressive overload workout tracker built as a fully offline-capable Progressive Web App (PWA). No subscriptions, no ads, no account required — just open the URL, add it to your home screen, and start tracking.
+A personal progressive overload workout tracker built as a fully offline-capable Progressive Web App (PWA). No subscriptions, no ads, no account required — install it on your home screen and start tracking.
 
 ---
 
 ## Table of Contents
-
-- [Overview](#overview)
 - [Features](#features)
 - [Workout Plan](#workout-plan)
 - [How to Use](#how-to-use)
-- [Installing as a Mobile App](#installing-as-a-mobile-app)
+- [Installing on Your Phone](#installing-on-your-phone)
 - [Offline Support](#offline-support)
-- [Data & Privacy](#data--privacy)
-- [Backup & Restore](#backup--restore)
-- [Sharing & Social](#sharing--social)
+- [Draft Auto-Save](#draft-auto-save)
+- [Google Drive Backup](#google-drive-backup)
+- [Local Backup & Restore](#local-backup--restore)
+- [Sharing PRs & Sessions](#sharing-prs--sessions)
+- [Calendar & Stats](#calendar--stats)
+- [Adding New Exercises](#adding-new-exercises)
 - [File Structure](#file-structure)
-- [Hosting](#hosting)
-- [Updating the App](#updating-the-app)
-
----
-
-## Overview
-
-Overload Tracker is a lightweight, mobile-first PWA designed around one principle: **always know what you lifted last time, so you can beat it this time.** It tracks weights, reps, sets, and hold times across a structured 5-day workout split plus a dedicated skills training day.
-
-Built with vanilla HTML, CSS, and JavaScript — no frameworks, no build tools, no dependencies beyond Chart.js for the volume charts.
+- [Deploying Updates](#deploying-updates)
 
 ---
 
 ## Features
 
-### 📋 Session Logging
-- Log weight, reps, and sets for every exercise
-- Log hold time in seconds for skill/isometric exercises
-- Tick off each set as you complete it
-- Add free-text notes per session (energy level, observations, pain points)
-
-### 🔁 Progressive Overload Tracking
-- Every exercise shows your **last session's numbers** before you start, so you always know your baseline
-- Input placeholders pre-fill with your last session's values as hints
-
-### 🏆 Personal Records (PRs)
-- Automatically tracks your all-time best for every exercise
-- PRs displayed per exercise on the log screen
-- Dedicated PRs tab showing bests across your entire regimen
-- Supports both weight-based PRs (kg × reps) and time-based PRs (seconds held)
-
-### 🎉 PR Celebration
-- When you hit a new PR, a celebration modal fires automatically after saving
-- Displays the exercise, new weight/time, and a rotating motivational quote (10 different quotes)
-- Fires only when a genuine improvement is detected — smarter than just any logged set
-
-### 📤 Share Cards
-- **Share PR Card** — generates a 1080×1080 shareable image from the PR celebration modal, branded with the app aesthetic
-- **Share Session Card** — tap the share button on any past session in History to generate a full session summary image
-- On Android, triggers the native share sheet (WhatsApp, Instagram, etc.)
-- On iPhone, saves to camera roll
-
-### 📆 Session History
-- Full history of every logged session in reverse chronological order
-- Shows all exercises and sets per session
-- Session notes displayed where logged
-
-### 📈 Volume Charts
-- **Volume by Day** — cumulative total volume (kg × reps) per day across all sessions as a bar chart, colour-coded by day
-- **Exercise Progress** — select any exercise from the dropdown to see your max weight over time as a line chart, showing your strength progression curve
-
-### 💾 Backup & Restore
-- **Export** — downloads a dated `.json` file of all session data
-- **Import** — merges a backup file back in without creating duplicates; safe to use on a new device
-
-### 📡 Offline Support
-- Full offline functionality via Service Worker after first load
-- Offline banner displayed when no internet connection is detected
-- All data stored locally on device via localStorage — never sent anywhere
+| Feature | Details |
+|---|---|
+| Session logging | Weight + reps + sets per exercise; seconds for timed holds |
+| Draft auto-save | Inputs saved instantly — switching apps won't lose your progress |
+| Last session display | See exactly what you lifted last time before each set |
+| PR tracking | Auto-detects new personal records on save |
+| PR celebration | Animated modal with rotating motivational quote |
+| Streak counter | 🔥 Tracks consecutive training days |
+| Calendar view | Monthly heatmap with per-day session details and stats |
+| Volume charts | Volume by day + exercise progress line chart |
+| Share cards | 1080×1080 shareable images for PRs and full sessions |
+| Google Drive backup | One-tap cloud backup via Google Apps Script |
+| Local backup | Export/import JSON for manual phone-to-phone transfer |
+| Offline support | Full offline capability via Service Worker after first load |
 
 ---
 
 ## Workout Plan
 
-The app is structured around the following 6-day plan:
-
-### 🟢 Monday — Chest / Triceps / Shoulders (Push Day)
+### 🟢 Monday — Push
 | Exercise | Sets | Reps |
 |---|---|---|
 | Barbell Floor Press | 4 | 6–10 |
@@ -93,7 +53,7 @@ The app is structured around the following 6-day plan:
 | Push-up Plus | 2 | 12–15 |
 | Scapular Push-ups | 2 | 12–15 |
 
-### 🔵 Tuesday — Pull / Biceps / Core
+### 🔵 Tuesday — Pull / Core
 | Exercise | Sets | Reps |
 |---|---|---|
 | Weighted Pull-ups | 4 | 5–8 |
@@ -114,7 +74,7 @@ The app is structured around the following 6-day plan:
 | Hanging Leg Raises | 3 | 10–15 |
 | Planks | 3 | max 90 sec |
 
-### 🟡 Thursday — Shoulders / Arms (V-Taper Day)
+### 🟡 Thursday — V-Taper
 | Exercise | Sets | Reps |
 |---|---|---|
 | Pike Push-ups | 4 | 6–10 |
@@ -124,9 +84,9 @@ The app is structured around the following 6-day plan:
 | Bent-Over Rear Delt Rows | 3 | 10–15 |
 | Dumbbell Curls | 3 | 8–12 |
 | Overhead Tricep Extension | 3 | 10–12 |
-| Partial Lateral Raises | 1 | Drop set to failure |
+| Partial Lateral Raises | 1 | Drop set |
 
-### 🔴 Friday — Upper Body Mass
+### 🔴 Friday — Upper Mass
 | Exercise | Sets | Reps |
 |---|---|---|
 | Weighted Pull-ups | 4 | 6–10 |
@@ -140,10 +100,10 @@ The app is structured around the following 6-day plan:
 ### 🟣 Skills Training
 | Exercise | Sets | Tracking |
 |---|---|---|
-| 90-Degree Hold | 3 | Seconds held |
-| Tuck Planche Hold | 3 | Seconds held |
-| Active Hang | 3 | Seconds held |
-| Ledge Hang | 3 | Seconds held |
+| 90-Degree Hold | 3 | Seconds |
+| Tuck Planche Hold | 3 | Seconds |
+| Active Hang | 3 | Seconds |
+| Ledge Hang | 3 | Seconds |
 | Behind the Neck Pull-ups | 3 | Reps |
 | Handstand Push-ups | 3 | Reps |
 | Wall Walks | 3 | Reps |
@@ -154,89 +114,169 @@ The app is structured around the following 6-day plan:
 ## How to Use
 
 ### Logging a Session
-1. Open the app and go to the **Log** tab
-2. Select the day tab at the top (Mon, Tue, Wed, Thu, Fri, Skills)
-3. Tap the **+** on any exercise to expand it
-4. Fill in weight (kg) and reps per set — or seconds for timed skills
-5. Tap the checkmark on the right to mark a set as done
-6. Optionally add a note at the bottom
-7. Tap **Save Session** when done
+1. Open the app → **Log** tab
+2. Select the day (Mon – Skills)
+3. Tap **+** on any exercise to expand it
+4. Fill in weight + reps per set (or seconds for timed holds)
+5. Tap the ✓ checkmark to mark a set done
+6. Add optional notes at the bottom
+7. Tap **Save Session →**
 
-### Reading the Last Session Display
-Under each exercise name you'll see two lines before you start:
-- **Last** (blue) — what you logged last time for this exact day, set by set
-- **PR** (green) — your all-time best for that exercise
+### Reading the Indicators
+- **↩ Last** (blue) — your numbers from the last time you trained this day
+- **★ PR** (green) — your all-time best for that exercise
 
-Your goal each session is to beat at least one of these numbers somewhere.
+Your goal: beat at least one number somewhere in the session.
 
 ### Bodyweight Exercises
-For exercises where you're not adding external weight (push-ups, dips, pull-ups without added weight), just enter `0` for the weight field and log your reps. The tracker will still record and display your rep PRs.
+Enter `0` for weight and log your reps. PR tracking still works.
 
 ---
 
-## Installing as a Mobile App
+## Installing on Your Phone
 
 ### Android (Chrome)
 1. Open the app URL in Chrome
-2. Tap the ⋮ menu (top right)
-3. Tap **Add to Home screen**
-4. Confirm — the app icon appears on your home screen
+2. Tap ⋮ menu → **Add to Home screen**
+3. Confirm
 
 ### iPhone (Safari)
-1. Open the app URL in **Safari** (must be Safari, not Chrome)
-2. Tap the Share icon (box with arrow pointing up)
-3. Tap **Add to Home Screen**
-4. Confirm — the app icon appears on your home screen
-
-Once installed, it behaves like a native app — full screen, no browser UI, launches from your home screen.
+1. Open the app URL in **Safari** (not Chrome)
+2. Tap the Share icon → **Add to Home Screen**
+3. Confirm
 
 ---
 
 ## Offline Support
 
-The app uses a **Service Worker** to cache all assets on first load. After visiting once with an internet connection, the app works completely offline including:
-
-- All workout data and logging
-- Charts and PR tracking
-- Export and import
-
-A yellow banner appears at the top of the app whenever you're offline, confirming it's running from cache. Your data is never affected by connectivity — it lives on your device.
+After one visit with internet, the app works fully offline including all logging, PR tracking, charts, and backup/export. A yellow banner appears when you're offline. All data is stored on your device — GitHub only hosts the app files.
 
 ---
 
-## Data & Privacy
+## Draft Auto-Save
 
-All data is stored **exclusively on your device** using `localStorage`. Nothing is ever sent to any server. There is no account, no cloud sync, and no analytics. GitHub Pages only hosts the app files — it has no access to your workout data.
+This is the fix for losing progress when switching apps mid-session.
 
----
+Every input (weight, reps, seconds, checkmarks, notes) is saved automatically to your device as you type. If you:
+- Switch to another app
+- Take a call
+- Lock your screen
+- The app goes to the background for any reason
 
-## Backup & Restore
-
-### Exporting a Backup
-1. Go to the **History** tab
-2. Tap **⬇ Export backup**
-3. A `.json` file is downloaded with today's date in the filename (e.g. `overload-backup-2026-06-08.json`)
-4. Save it to Google Drive, email it to yourself, or store it anywhere safe
-
-It is recommended to export a backup every few weeks or before switching phones.
-
-### Importing a Backup
-1. Go to the **History** tab on your new device
-2. Tap **⬆ Import backup**
-3. Select your `.json` backup file
-4. Sessions are merged in — duplicates are automatically skipped
+Your in-progress session is still there when you come back. The draft is cleared only when you tap **Save Session →**. You can safely switch apps as many times as you need mid-workout.
 
 ---
 
-## Sharing & Social
+## Google Drive Backup
 
-### Sharing a PR
-When a new PR is detected after saving a session, a celebration modal appears. Tap **📤 Share PR** to generate a branded 1080×1080 image card showing the exercise, weight/time, and date.
+This gives you full cloud backup so you never lose data if you lose your phone.
 
-### Sharing a Session
-In the **History** tab, each session has a **📤** button next to the date. Tap it to generate a full session summary image showing all logged sets.
+### One-Time Setup (5 minutes)
 
-On Android the native share sheet opens. On iPhone the image is saved to your camera roll for sharing anywhere.
+**Step 1 — Create the Script**
+1. Go to [script.google.com](https://script.google.com) and sign in with your Google account
+2. Click **New Project**
+3. Delete all existing code
+4. Open the file `google-drive-backup.gs` from this repo and paste its entire contents
+5. Press **Ctrl+S** to save. Name the project `Overload Backup`
+
+**Step 2 — Deploy as Web App**
+1. Click **Deploy** → **New Deployment**
+2. Click the gear icon ⚙ next to "Select type" → choose **Web App**
+3. Set **Execute as**: `Me`
+4. Set **Who has access**: `Anyone`
+5. Click **Deploy**
+6. Google will ask you to authorize — click through and allow
+7. Copy the **Web App URL** that appears (it starts with `https://script.google.com/macros/s/...`)
+
+**Step 3 — Connect to the App**
+1. Open the Overload Tracker → **History** tab → tap **☁ Drive**
+2. Paste your Web App URL into the field
+3. Tap **Save URL** (saves it permanently so you only do this once)
+4. Tap **⬆ Backup Now** — your sessions upload to a folder called `Overload Tracker Backups` in your Google Drive
+
+### Restoring from Drive
+1. Open the app on your new phone → **History** → **☁ Drive**
+2. Paste your Web App URL → tap **⬇ Restore from Drive**
+3. All sessions are merged in without duplicates
+
+### Backup Strategy
+- Tap **⬆ Backup Now** after any important session or weekly
+- Google Drive keeps both `overload-latest-backup.json` (always current) and dated copies
+
+---
+
+## Local Backup & Restore
+
+For manual backups without Google Drive.
+
+### Export
+History tab → **⬇ Export** → downloads `overload-backup-YYYY-MM-DD.json`
+
+Save it to Google Drive, WhatsApp Saved Messages, or email it to yourself.
+
+### Import
+History tab → **⬆ Import** → select your `.json` file → sessions merge in without duplicates.
+
+---
+
+## Sharing PRs & Sessions
+
+### Share a PR
+When a new PR fires, tap **📤 Share PR** on the celebration modal. Generates a branded 1080×1080 image card.
+
+### Share a Session
+In the **History** tab, tap the **📤** button on any session. Generates a full session summary image.
+
+On Android → native share sheet (WhatsApp, Instagram, etc.)
+On iPhone → saves to camera roll
+
+---
+
+## Calendar & Stats
+
+The **Calendar** tab shows:
+- Monthly view with coloured dots on workout days
+- Stats: sessions this month, active days, total volume
+- Scrollable log of recent sessions with volume, day type, and notes
+- Navigate months with ‹ › arrows
+
+---
+
+## Adding New Exercises
+
+Open `index.html` in any text editor and find the clearly marked section:
+
+```
+// ╔══════════════════════════════════════════╗
+// ║  WORKOUT DATA — EDIT THIS SECTION        ║
+```
+
+### Adding to an Existing Day
+Find the day you want (e.g. Monday) and add a new line inside its `exercises` array:
+
+```js
+// For a weight + reps exercise:
+{name:"Your Exercise Name", sets:3, rep_range:"8–12", type:"reps"},
+
+// For a timed hold exercise (logs seconds):
+{name:"Your Hold Name", sets:3, rep_range:"max time", type:"time"},
+```
+
+### Adding to Skills
+Scroll to the Skills day and find the comment:
+```
+// ── ADD NEW SKILLS BELOW THIS LINE ──
+```
+Add your exercise there. Examples are already in the comments.
+
+### Rules
+- `name` — exactly what appears in the app and PR tracking (must be unique)
+- `sets` — number of input rows shown
+- `rep_range` — display only, shown as a hint (e.g. `"8–12"`, `"max reps"`, `"60 sec"`)
+- `type` — `"reps"` for weight+reps tracking, `"time"` for seconds tracking
+
+After editing, upload the new `index.html` to GitHub. Your existing session data is never affected by adding exercises.
 
 ---
 
@@ -244,36 +284,25 @@ On Android the native share sheet opens. On iPhone the image is saved to your ca
 
 ```
 overload-tracker/
-├── index.html       # Main app — all UI, logic, and styles in one file
-├── sw.js            # Service worker — handles offline caching
-├── manifest.json    # PWA manifest — enables home screen installation
-└── icon.png         # App icon — shown on home screen and browser tab
+├── index.html                # Full app — all UI, logic, styles
+├── sw.js                     # Service worker — offline caching
+├── manifest.json             # PWA manifest — home screen install
+├── icon.png                  # App icon
+├── google-drive-backup.gs    # Google Apps Script — paste into script.google.com
+└── README.md                 # This file
 ```
 
 ---
 
-## Hosting
+## Deploying Updates
 
-The app is hosted on **GitHub Pages** — free, permanent, and reliable. The URL format is:
-
-```
-https://yourusername.github.io/overload-tracker/
-```
-
-GitHub Pages has been a free feature for over 10 years with no signs of changing. The only scenarios that would take the app offline are deleting the repository or losing access to the GitHub account.
-
----
-
-## Updating the App
-
-When new files are uploaded to GitHub:
-
+When you upload a new `index.html` to GitHub:
 1. GitHub Pages rebuilds within 1–2 minutes
-2. The Service Worker cache version is bumped, forcing all devices to download fresh files
-3. On mobile, if the old version persists — remove the app from your home screen and re-add it fresh from the browser
+2. The service worker cache version bumps, forcing devices to download fresh files
+3. On mobile: if the old version persists, remove the app from home screen, reopen in browser with internet, and re-add
 
-To manually clear the cache on mobile, go to your browser settings, find site data for the app URL, and clear it — then reopen the app with internet to re-cache.
+To force a cache refresh manually on mobile: go to browser settings → find site data for your app URL → clear it → reopen.
 
 ---
 
-*Built with vanilla HTML/CSS/JS · Hosted on GitHub Pages · No frameworks · No accounts · No cost*
+*Vanilla HTML/CSS/JS · Chart.js · GitHub Pages · No frameworks · No accounts · No cost*
