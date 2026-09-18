@@ -667,13 +667,14 @@ function updateStreak(){
   }))].sort((a,b)=>b-a);
   const today=new Date(); today.setHours(0,0,0,0);
   const todayTs=today.getTime();
-  // Streak dies if last session was more than 2 days ago
-  if(sessionDates[0]<todayTs-2*86400000){ document.getElementById('streak-num').textContent=0; return; }
-  // Count consecutive training days going back, allowing gaps of up to 2 days
+  // Allow up to 3 days gap — covers full Sat+Sun rest weekend
+  // e.g. trained Friday, opens app Monday morning = 3 day gap, still alive
+  if(sessionDates[0]<todayTs-3*86400000){ document.getElementById('streak-num').textContent=0; return; }
+  // Count session days going back, allowing gaps of up to 3 days between each
   let streak=1;
   for(let i=1;i<sessionDates.length;i++){
     const gap=sessionDates[i-1]-sessionDates[i];
-    if(gap<=2*86400000) streak++;
+    if(gap<=3*86400000) streak++;
     else break;
   }
   document.getElementById('streak-num').textContent=streak;
