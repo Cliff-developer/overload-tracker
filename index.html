@@ -83,6 +83,7 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);displa
 .day-tab[data-day="3"].active{background:#f4c430;border-color:#f4c430;box-shadow:0 0 12px #f4c43055}
 .day-tab[data-day="4"].active{background:#f07070;border-color:#f07070;box-shadow:0 0 12px #f0707055}
 .day-tab[data-day="5"].active{background:#b48cff;border-color:#b48cff;box-shadow:0 0 12px #b48cff55}
+.day-tab[data-day="6"].active{background:#ff9f43;border-color:#ff9f43;box-shadow:0 0 12px #ff9f4355}
 .day-has-session::after{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;background:currentColor;margin-left:5px;vertical-align:middle;opacity:0.7}
 
 /* ── EXERCISE BLOCKS ── */
@@ -224,6 +225,7 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);displa
 .cal-day[data-daytype="3"].worked-out{background:#f4c43022}
 .cal-day[data-daytype="4"].worked-out{background:#f0707022}
 .cal-day[data-daytype="5"].worked-out{background:#b48cff22}
+.cal-day[data-daytype="6"].worked-out{background:#ff9f4322}
 
 .cal-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:20px}
 .cal-stat{background:var(--bg2);border:0.5px solid var(--border);border-radius:12px;padding:12px;text-align:center}
@@ -544,6 +546,28 @@ const DAYS = [
       // Example rep skill:
       // {name:"Archer Pull-ups", sets:3, rep_range:"max reps", type:"reps"},
     ]
+  },
+  {
+    label:"Calis", full:"Calisthenics — Maintenance", color:"#ff9f43",
+    note:"🔄 Start with Wrist Conditioning Circles before beginning — 10 reps each direction.",
+    exercises:[
+      // ── WARM-UP / FOUNDATION ──
+      {name:"Hollow Body Hold",         sets:3, rep_range:"max time",  type:"time"},
+      {name:"L-Sit Hold",               sets:3, rep_range:"max time",  type:"time"},
+      // ── SKILL HOLDS ──
+      {name:"Tuck Planche Hold",        sets:3, rep_range:"max time",  type:"time"},
+      {name:"Handstand Hold",           sets:3, rep_range:"max time",  type:"time"},
+      // ── PULLING ──
+      {name:"Skin the Cat",             sets:3, rep_range:"5–8",       type:"reps"},
+      {name:"Pull-ups",                 sets:4, rep_range:"max reps",  type:"reps"},
+      // ── PUSHING ──
+      {name:"Archer Push-ups",          sets:3, rep_range:"6–10 each", type:"reps"},
+      {name:"Pseudo Planche Push-ups",  sets:3, rep_range:"8–12",      type:"reps"},
+      // ── PEAK SKILL ──
+      {name:"L-Sit to Handstand",       sets:3, rep_range:"max reps",  type:"reps"}
+      // ── ADD NEW CALISTHENICS BELOW THIS LINE ──
+      // {name:"Front Lever Tuck Hold", sets:3, rep_range:"max time", type:"time"},
+    ]
   }
 ];
 // ─────────────────────────────────────────────
@@ -724,7 +748,8 @@ function buildDayTabs(){
 function buildExercises(){
   const day = DAYS[activeDay];
   const c = document.getElementById('exercises-area');
-  c.innerHTML = `<div style="font-size:13px;font-weight:700;margin-bottom:14px;color:${day.color};letter-spacing:0.3px">${day.full}</div>`;
+  c.innerHTML = `<div style="font-size:13px;font-weight:700;margin-bottom:${day.note?'8px':'14px'};color:${day.color};letter-spacing:0.3px">${day.full}</div>
+    ${day.note?`<div style="background:${day.color}18;border:0.5px solid ${day.color}44;border-radius:8px;padding:10px 12px;font-family:'DM Mono',monospace;font-size:11px;color:${day.color};margin-bottom:14px;line-height:1.5">${day.note}</div>`:''}`;
 
   day.exercises.forEach((ex,ei)=>{
     const isTime = ex.type==='time';
